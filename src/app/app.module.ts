@@ -1,30 +1,31 @@
-import { NgModule, APP_INITIALIZER } from '@angular/core';
-import { HttpClientModule, HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
+import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
+import { DefaultInterceptor, StartupService, TranslateLangService } from '@core';
+import { FormlyModule } from '@ngx-formly/core';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { ErrorInterceptor } from '@shared/interceptors/error.interceptor';
+import { SanctumInterceptor } from '@shared/interceptors/sanctum.interceptor';
+import { ServerUrlInterceptor } from '@shared/interceptors/server-url.interceptor';
+import { TokenInterceptor } from '@shared/interceptors/token.interceptor';
+import { ToastrModule } from 'ngx-toastr';
+import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
+import { RoutesModule } from './routes/routes.module';
 import { SharedModule } from './shared/shared.module';
 import { ThemeModule } from './theme/theme.module';
-import { RoutesModule } from './routes/routes.module';
-import { AppComponent } from './app.component';
 
-import { DefaultInterceptor } from '@core';
-import { StartupService } from '@core';
 export function StartupServiceFactory(startupService: StartupService) {
   return () => startupService.load();
 }
 
-import { FormlyModule } from '@ngx-formly/core';
-import { ToastrModule } from 'ngx-toastr';
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 // Required for AOT compilation
 export function TranslateHttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
 
-import { TranslateLangService } from '@core';
 export function TranslateLangServiceFactory(translateLangService: TranslateLangService) {
   return () => translateLangService.load();
 }
@@ -53,6 +54,26 @@ export function TranslateLangServiceFactory(translateLangService: TranslateLangS
     {
       provide: HTTP_INTERCEPTORS,
       useClass: DefaultInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ServerUrlInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: SanctumInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
       multi: true,
     },
     {

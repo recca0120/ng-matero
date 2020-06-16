@@ -4,6 +4,7 @@
 
 export const environment = {
   SERVER_URL: '',
+  API_ENDPOINT: '/api',
   production: false,
   useHash: true,
   hmr: true,

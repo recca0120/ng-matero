@@ -21,3 +21,30 @@ export class LocalStorageService {
     localStorage.clear();
   }
 }
+
+@Injectable({
+  providedIn: 'root',
+})
+export class DummyStorageService extends LocalStorageService {
+  private store = {};
+
+  get(key: string) {
+    return JSON.parse(this.store[key] || '{}') || {};
+  }
+
+  set(key: string, value: any): boolean {
+    this.store[key] = JSON.stringify(value);
+
+    return true;
+  }
+
+  remove(key: string) {
+    if (this.store[key]) {
+      delete this.store[key];
+    }
+  }
+
+  clear() {
+    this.store = [];
+  }
+}
