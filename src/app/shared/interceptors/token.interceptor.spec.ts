@@ -6,7 +6,7 @@ import {
 } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { DummyStorageService, LocalStorageService } from '@shared';
-import { Token, TokenService } from '@shared/services/token.service';
+import { Token, TokenService } from '@shared/authentication/token.service';
 import { TokenInterceptor } from './token.interceptor';
 
 describe('TokenInterceptor', () => {

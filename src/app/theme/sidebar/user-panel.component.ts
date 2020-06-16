@@ -1,17 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AuthService } from '@shared/authentication/auth.service';
+import { Guest, User } from '@shared/authentication/user';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-user-panel',
   template: `
     <div class="matero-user-panel" fxLayout="column" fxLayoutAlign="center center">
-      <img
-        class="matero-user-panel-avatar"
-        src="assets/images/avatar.jpg"
-        alt="avatar"
-        width="64"
-      />
-      <h4 class="matero-user-panel-name">Zongbin</h4>
-      <h5 class="matero-user-panel-email">nzb329@163.com</h5>
+      <img class="matero-user-panel-avatar" src="{{ user.avatar }}" alt="avatar" width="64" />
+      <h4 class="matero-user-panel-name">{{ user.name }}</h4>
+      <h5 class="matero-user-panel-email">{{ user.email }}</h5>
       <div class="matero-user-panel-icons">
         <a routerLink="/profile/overview" mat-icon-button>
           <mat-icon>account_circle</mat-icon>
@@ -26,4 +24,14 @@ import { Component } from '@angular/core';
     </div>
   `,
 })
-export class UserPanelComponent {}
+export class UserPanelComponent implements OnInit, OnDestroy {
+  user: User = new Guest();
+  private subscription: Subscription;
+  constructor(private authService: AuthService) {}
+  ngOnInit() {
+    this.subscription = this.authService.user().subscribe(user => (this.user = user));
+  }
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+}

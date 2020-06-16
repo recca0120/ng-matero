@@ -1,13 +1,12 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { environment } from '@env/environment';
-
+import { AuthGuard } from '@shared/authentication/auth.guard';
 import { AdminLayoutComponent } from '../theme/admin-layout/admin-layout.component';
 import { AuthLayoutComponent } from '../theme/auth-layout/auth-layout.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoginComponent } from './sessions/login/login.component';
 import { RegisterComponent } from './sessions/register/register.component';
-import { AuthGuard } from '@core';
 
 const routes: Routes = [
   {

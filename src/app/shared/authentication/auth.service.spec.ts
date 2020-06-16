@@ -1,8 +1,8 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { DummyStorageService, LocalStorageService } from '@shared';
 import { filter } from 'rxjs/operators';
 import { AuthService } from './auth.service';
-import { DummyStorageService, LocalStorageService } from './storage.service';
 import { Token, TokenService } from './token.service';
 import { GenericUser, Guest } from './user';
 
